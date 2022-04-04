@@ -1,2 +1,2 @@
 # hatflix
-Sistema de criação generico de lojas de roupas.
+Um sistema gérico de loja de roupas.
