@@ -1,12 +1,11 @@
 # hatflix
-Um sistema gérico de loja de roupas.
 
-A ideia é desenvolver uma loja virtual genérico que pode ser usado por qualquer loja de roupas com um backend fixo.
-Dessa forma esse software pode se reaproveitado por várias lojas alterando apenas a interface.
+Sistema de uma loja de roupas genérica.
 
-Trabalho desenvolvido para a disciplica de práticas em desenvolvimento de software - DCC - UFMG - 01/2022
+Trabalho desenvolvido para a disciplina de Práticas em Desenvolvimento de Software - DCC - UFMG - 01/2022
+
 Equipe:
-  - Lider: Rafael Massoni Gonçalves Barbosa
+  - Lider/Backend: Rafael Massoni Gonçalves Barbosa
   - Backend: Marco Antônio Silveira Souza Alves
   - DBA: Thomas Esteves
   - Frontend: Pedro Henrique Silva Gonçalves de Souza 
