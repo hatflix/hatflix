@@ -36,9 +36,9 @@ Histórias de usuário em ordem de prioridade, da mais prioritária para a menos
 
   4) Eu, **como administrador de uma loja no Hatflix**, quero poder administrar as configurações e o catálogo da minha loja.
 
-  5) Eu, **como usuário do Hatflix**, quero administrar minhas informações pessoais através de um sistema de login.
+  5) Eu, **como usuário do Hatflix**, quero poder visualizar todas as lojas de roupas disponíveis na Hatflix.
 
-  6) Eu, **como usuário do Hatflix**, quero poder visualizar todas as lojas de roupas disponíveis na Hatflix.
+  6) Eu, **como usuário do Hatflix**, quero administrar minhas informações pessoais através de um sistema de login.
 
   7) Eu, **como usuário do Hatflix**, quero adicionar itens à um "Carrinho" para poder comprá-los em um mesmo pedido.
 
