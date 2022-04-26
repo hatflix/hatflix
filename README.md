@@ -32,20 +32,20 @@ Histórias de usuário em ordem de prioridade, da mais prioritária para a menos
  
   1) Eu, **como administrador do Hatflix**, quero poder administrar as lojas do sistema da Hatflix.
 
-  3) Eu, **como administrador de uma loja no Hatflix**, quero poder solicitar o cadastro da minha loja no sistema da Hatflix.
+  2) Eu, **como administrador de uma loja no Hatflix**, quero poder solicitar o cadastro da minha loja no sistema da Hatflix.
 
-  4) Eu, **como administrador de uma loja no Hatflix**, quero poder administrar as configurações e o catálogo da minha loja.
+  3) Eu, **como administrador de uma loja no Hatflix**, quero poder administrar as configurações e o catálogo da minha loja.
 
-  5) Eu, **como usuário do Hatflix**, quero poder visualizar todas as lojas de roupas disponíveis na Hatflix.
+  4) Eu, **como usuário do Hatflix**, quero poder visualizar todas as lojas de roupas disponíveis na Hatflix.
 
-  6) Eu, **como usuário do Hatflix**, quero administrar minhas informações pessoais através de um sistema de login.
+  5) Eu, **como administrador de uma loja no Hatflix**, quero poder administrar os pedidos dos meus clientes.
 
-  7) Eu, **como usuário do Hatflix**, quero adicionar itens à um "Carrinho" para poder comprá-los em um mesmo pedido.
+  6) Eu, **como usuário do Hatflix**, quero adicionar itens à um "Carrinho" para poder comprá-los em um mesmo pedido.
 
-  9) Eu, **como usuário do Hatflix**, quero poder administrar meus pedidos.
+  7) Eu, **como usuário do Hatflix**, quero administrar minhas informações pessoais através de um sistema de login.
 
-  10) Eu, **como administrador de uma loja no Hatflix**, quero poder administrar os pedidos dos meus clientes.
+  8) Eu, **como usuário do Hatflix**, quero poder administrar meus pedidos.
 
-  12) Eu, **como usuário do Hatflix**, quero escolher uma roupa específica à partir de uma categoria de vestimenta.
+  9) Eu, **como usuário do Hatflix**, quero escolher uma roupa específica à partir de uma categoria de vestimenta.
 
-  13) Eu, **como usuário do Hatflix**, quero encontrar uma roupa específica de que sei o nome para poder comprá-la.
+  10) Eu, **como usuário do Hatflix**, quero encontrar uma roupa específica de que sei o nome para poder comprá-la.
