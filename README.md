@@ -57,7 +57,7 @@ O MVP para o Hatflix será uma planilha constituída de duas páginas principais
 
 A primeira página, chamada "Hatflix", irá conter um aglomerado de lojas de roupa com os seus respectivos itens. Dessa forma, é possível procurar por roupas de uma forma unificada em todos os estabelecimentos disponíveis.
 
-A segunda página, nomeada "Carrinho", será a lista de itens que o cliente deseja comprar. Essa lista possui os itens da primeira página e pode conter roupas de diferentes lojas. A lista deverá ser preenchida manualmente pelo cliente.
+A segunda página, nomeada "Carrinho", será a lista de itens que o cliente deseja comprar. Essa lista possui os itens da primeira página e pode conter roupas de diferentes lojas. O carrinho deverá ser preenchido manualmente pelo cliente, assim como as informações necessárias para a entrega.
 
 O backend será simulado manualmente. A lista de lojas e produtos deverá ser construída procurando em sites e atualizando de tempos em tempos. Para simular a compra, iremos consultar a segunda página da planilha, comprar os itens nas respectivas lojas e entregar ao cliente, cobrando o frete e o preço do produto.
 
