@@ -6,6 +6,9 @@ Sistema para centralização de lojas de roupas.
 
 Trabalho desenvolvido para a disciplina de Práticas em Desenvolvimento de Software - DCC - UFMG - 01/2022
 
+- [hatflix](#hatflix)
+- [Backlog de Produto](#backlog-de-produto)
+
 Equipe:
   - Líder/Backend: Rafael Massoni Gonçalves Barbosa
   - Backend: Marco Antônio Silveira Souza Alves
