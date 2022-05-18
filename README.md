@@ -17,7 +17,7 @@ Tecnologias:
   - GraphQL
   - JavaScript
   - Tailwindcss
-  - REACT
+  - NextJs
   - MariaDB
   - Docker
   - Github Actions
