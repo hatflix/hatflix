@@ -1,0 +1,99 @@
+scalar Hour
+
+
+type Store {
+	id: Int!
+    name: String!
+	storeId: Int!
+    cnpj: String!
+   	phoneNumber: String!
+	address: String!
+	category: Int!
+}
+
+type Clothes {
+	id: Int!
+	name: String!
+    id_store: Int!
+	category: Int!
+	size: String!
+	price: Float!
+	quantity: Int!
+}
+
+type Category {
+	id: Int!
+	name: String!
+}
+
+input createStoreInput {
+	name: String!
+	cnpj: String!
+	phoneNumber: String!
+	address: String!
+	category: Int!
+}
+
+input createClothInput {
+	name: String!
+	id_store: Int!
+	category: Int!
+	size: String!
+	price: Float!
+	quantity: Int!
+}
+
+input createCategoryInput {
+	name: String!
+}
+
+input updateClothInput {
+	id: Int!
+	name: String!
+	id_store: Int!
+	category: Int!
+	size: String!
+	price: Float!
+	quantity: Int!
+}
+
+input updateStoreInput {
+	id: Int!
+	name: String!
+	cnpj: String!
+	phoneNumber: String!
+	address: String!
+	category: Int!
+}
+
+input updateCategoryInput {
+    id: Int!
+    name: String!
+}
+
+type Query {
+	store(id: Int): [Store!]
+	clothes(id: Int): [Clothes!]
+	category(id: Int): [Category!]
+}
+
+type Mutation {
+	createClothes(input: createClothInput!): Boolean!
+	createCategory(input: createCategoryInput): Boolean!
+	createStore(name: createStoreInput!): Boolean!
+	updateStore(input: updateStoreInput!): Store!
+	updateCloth(input: updateClothInput!): Clothes!
+	updateCategory(input: updateCategoryInput!): Boolean!
+}
+
+
+
+enum Weekdays {
+	MONDAY
+	TUESDAY
+	WEDNESDAY
+	THURSDAY
+	FRIDAY
+	SATURDAY
+	SUNDAY
+}

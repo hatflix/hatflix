@@ -1,0 +1,29 @@
+schema: schema.graphql
+
+exec:
+  filename: ./../../pkg/graphql/gqlgen/generated.go
+
+model:
+  filename: ./../../pkg/graphql/models/generated.go
+
+models:
+  Clothes:
+    fields:
+      store:
+        resolver: true
+      category:
+        resolver: true
+
+  Store:
+    fields:
+      clothes:
+        resolver: true
+      category:
+        resolver: true
+
+  Category:
+    fields:
+      clothes:
+        resolver: true
+      store:
+        resolver: true
