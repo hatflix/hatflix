@@ -8,9 +8,9 @@ import (
 	"github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/require"
 
-	"easyfood/pkg/entity"
-	"easyfood/services"
-	mock "easyfood/test"
+	"hatflix/pkg/entity"
+	"hatflix/services"
+	mock "hatflix/test"
 )
 
 func TestQueryResolver_Category(t *testing.T) {
@@ -18,7 +18,7 @@ func TestQueryResolver_Category(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	categoryService := mock.NewMockCategoryService(ctrl)
 	srvc := services.All{
-		Category:   categoryService,
+		Category: categoryService,
 	}
 	query := NewQueryResolver(srvc)
 
@@ -39,7 +39,7 @@ func TestQueryResolver_Category(t *testing.T) {
 				Name: "asiática",
 			},
 			{
-				Id: 201,
+				Id:   201,
 				Name: "brasileira",
 			},
 		}
@@ -64,42 +64,5 @@ func TestQueryResolver_Category(t *testing.T) {
 		require.Nil(t, err)
 		require.Len(t, res, 1)
 		require.Equal(t, "asiática", res[0].Name)
-	})
-}
-
-func TestQueryResolver_Dish(t *testing.T) {
-	ctx := context.Background()
-	ctrl := gomock.NewController(t)
-	dishService := mock.NewMockDishService(ctrl)
-	srvc := services.All{
-		Dish:   dishService,
-	}
-	query := NewQueryResolver(srvc)
-
-	t.Run("fail", func(t *testing.T) {
-		Id := 500
-		expectedErr := errors.New("failed")
-		dishService.EXPECT().Get(gomock.Any(), &Id).Return(nil, expectedErr)
-		res, err := query.Dish(ctx, &Id)
-
-		require.Nil(t, res)
-		require.True(t, errors.Is(expectedErr, err))
-	})
-
-	t.Run("success", func(t *testing.T) {
-		Id := 500
-		dish := []*entity.Dish{
-			{
-				Id:           200,
-				Name:         "macarronada",
-				Price:        15,
-				CookTime:     25,
-			},
-		}
-		dishService.EXPECT().Get(gomock.Any(), &Id).Return(dish, nil)
-		res, err := query.Dish(ctx, &Id)
-
-		require.Nil(t, err)
-		require.Equal(t, "macarronada", res[0].Name)
 	})
 }
