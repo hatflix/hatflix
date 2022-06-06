@@ -4,8 +4,8 @@ package services
 import (
 	"context"
 	"database/sql"
-	"easyfood/pkg/entity"
 	"fmt"
+	"hatflix/pkg/entity"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -64,9 +64,9 @@ func (c categoryService) GetByRestaurant(ctx context.Context, restaurantId int) 
 	result := make([]*entity.Category, 0)
 
 	query := fmt.Sprintf("SELECT c.id, c.nome FROM categorias as c "+
-				"INNER JOIN `restaurante-categoria` as rc " +
-				"on c.id = rc.id_categoria "+
-				"WHERE rc.id_restaurante = %d", restaurantId)
+		"INNER JOIN `restaurante-categoria` as rc "+
+		"on c.id = rc.id_categoria "+
+		"WHERE rc.id_restaurante = %d", restaurantId)
 
 	err := c.db.SelectContext(ctx, &result, query)
 	if err != nil {

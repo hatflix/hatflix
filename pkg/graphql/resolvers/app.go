@@ -3,8 +3,8 @@ package graphql
 import (
 	"github.com/jmoiron/sqlx"
 
-	"easyfood/pkg/graphql/gqlgen"
-	"easyfood/services"
+	"hatflix/pkg/graphql/gqlgen"
+	"hatflix/services"
 )
 
 type app struct {
@@ -23,14 +23,14 @@ func (a app) Query() gqlgen.QueryResolver {
 	return NewQueryResolver(a.services)
 }
 
-func (a app) Restaurant() gqlgen.RestaurantResolver {
-	return NewRestaurantResolver(a.services)
-}
-
-func (a app) Dish() gqlgen.DishResolver {
-	return NewDishResolver(a.services)
-}
-
-func (a app) Category() gqlgen.CategoryResolver {
-	return NewCategoryResolver(a.services)
-}
+//func (a app) Restaurant() gqlgen.StoreResolver {
+//	return NewRestaurantResolver(a.services)
+//}
+//
+//func (a app) Dish() gqlgen.ClothesResolver {
+//	return NewDishResolver(a.services)
+//}
+//
+//func (a app) Category() gqlgen.CategoryResolver {
+//	return NewCategoryResolver(a.services)
+//}

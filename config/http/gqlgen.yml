@@ -10,20 +10,20 @@ models:
   Clothes:
     fields:
       store:
-        resolver: true
+        resolver: false
       category:
-        resolver: true
+        resolver: false
 
   Store:
     fields:
       clothes:
-        resolver: true
+        resolver: false
       category:
-        resolver: true
+        resolver: false
 
   Category:
     fields:
       clothes:
-        resolver: true
+        resolver: false
       store:
-        resolver: true
+        resolver: false

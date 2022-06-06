@@ -3,9 +3,9 @@ package graphql
 import (
 	"context"
 
-	"easyfood/pkg/graphql/gqlgen"
-	"easyfood/pkg/graphql/models"
-	"easyfood/services"
+	"hatflix/pkg/graphql/gqlgen"
+	"hatflix/pkg/graphql/models"
+	"hatflix/services"
 )
 
 type queryResolver struct {

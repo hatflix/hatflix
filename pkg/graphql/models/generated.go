@@ -2,12 +2,6 @@
 
 package models
 
-import (
-	"fmt"
-	"io"
-	"strconv"
-)
-
 type Category struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
@@ -76,55 +70,4 @@ type UpdateStoreInput struct {
 	PhoneNumber string `json:"phoneNumber"`
 	Address     string `json:"address"`
 	Category    int    `json:"category"`
-}
-
-type Weekdays string
-
-const (
-	WeekdaysMonday    Weekdays = "MONDAY"
-	WeekdaysTuesday   Weekdays = "TUESDAY"
-	WeekdaysWednesday Weekdays = "WEDNESDAY"
-	WeekdaysThursday  Weekdays = "THURSDAY"
-	WeekdaysFriday    Weekdays = "FRIDAY"
-	WeekdaysSaturday  Weekdays = "SATURDAY"
-	WeekdaysSunday    Weekdays = "SUNDAY"
-)
-
-var AllWeekdays = []Weekdays{
-	WeekdaysMonday,
-	WeekdaysTuesday,
-	WeekdaysWednesday,
-	WeekdaysThursday,
-	WeekdaysFriday,
-	WeekdaysSaturday,
-	WeekdaysSunday,
-}
-
-func (e Weekdays) IsValid() bool {
-	switch e {
-	case WeekdaysMonday, WeekdaysTuesday, WeekdaysWednesday, WeekdaysThursday, WeekdaysFriday, WeekdaysSaturday, WeekdaysSunday:
-		return true
-	}
-	return false
-}
-
-func (e Weekdays) String() string {
-	return string(e)
-}
-
-func (e *Weekdays) UnmarshalGQL(v interface{}) error {
-	str, ok := v.(string)
-	if !ok {
-		return fmt.Errorf("enums must be strings")
-	}
-
-	*e = Weekdays(str)
-	if !e.IsValid() {
-		return fmt.Errorf("%s is not a valid Weekdays", str)
-	}
-	return nil
-}
-
-func (e Weekdays) MarshalGQL(w io.Writer) {
-	fmt.Fprint(w, strconv.Quote(e.String()))
 }

@@ -9,7 +9,6 @@ import (
 	"hatflix/pkg/graphql/models"
 	"strconv"
 	"sync"
-	"sync/atomic"
 
 	"github.com/99designs/gqlgen/graphql"
 	"github.com/99designs/gqlgen/graphql/introspection"
@@ -35,10 +34,8 @@ type Config struct {
 }
 
 type ResolverRoot interface {
-	Clothes() ClothesResolver
 	Mutation() MutationResolver
 	Query() QueryResolver
-	Store() StoreResolver
 }
 
 type DirectiveRoot struct {
@@ -86,24 +83,18 @@ type ComplexityRoot struct {
 	}
 }
 
-type ClothesResolver interface {
-	Category(ctx context.Context, obj *models.Clothes) (int, error)
-}
 type MutationResolver interface {
 	CreateClothes(ctx context.Context, input models.CreateClothInput) (bool, error)
 	CreateCategory(ctx context.Context, input *models.CreateCategoryInput) (bool, error)
 	CreateStore(ctx context.Context, name models.CreateStoreInput) (bool, error)
 	UpdateStore(ctx context.Context, input models.UpdateStoreInput) (*models.Store, error)
 	UpdateCloth(ctx context.Context, input models.UpdateClothInput) (*models.Clothes, error)
-	UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (bool, error)
+	UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (*models.Category, error)
 }
 type QueryResolver interface {
 	Store(ctx context.Context, id *int) ([]*models.Store, error)
 	Clothes(ctx context.Context, id *int) ([]*models.Clothes, error)
 	Category(ctx context.Context, id *int) ([]*models.Category, error)
-}
-type StoreResolver interface {
-	Category(ctx context.Context, obj *models.Store) (int, error)
 }
 
 type executableSchema struct {
@@ -490,19 +481,7 @@ type Mutation {
 	createStore(name: createStoreInput!): Boolean!
 	updateStore(input: updateStoreInput!): Store!
 	updateCloth(input: updateClothInput!): Clothes!
-	updateCategory(input: updateCategoryInput!): Boolean!
-}
-
-
-
-enum Weekdays {
-	MONDAY
-	TUESDAY
-	WEDNESDAY
-	THURSDAY
-	FRIDAY
-	SATURDAY
-	SUNDAY
+	updateCategory(input: updateCategoryInput!): Category!
 }
 `, BuiltIn: false},
 }
@@ -886,14 +865,14 @@ func (ec *executionContext) _Clothes_category(ctx context.Context, field graphql
 		Object:     "Clothes",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
+		IsMethod:   false,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Clothes().Category(rctx, obj)
+		return obj.Category, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1262,9 +1241,9 @@ func (ec *executionContext) _Mutation_updateCategory(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(*models.Category)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNCategory2ᚖhatflixᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_store(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1676,14 +1655,14 @@ func (ec *executionContext) _Store_category(ctx context.Context, field graphql.C
 		Object:     "Store",
 		Field:      field,
 		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
+		IsMethod:   false,
+		IsResolver: false,
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Store().Category(rctx, obj)
+		return obj.Category, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3129,46 +3108,37 @@ func (ec *executionContext) _Clothes(ctx context.Context, sel ast.SelectionSet, 
 		case "id":
 			out.Values[i] = ec._Clothes_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "name":
 			out.Values[i] = ec._Clothes_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "id_store":
 			out.Values[i] = ec._Clothes_id_store(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "category":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Clothes_category(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Clothes_category(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		case "size":
 			out.Values[i] = ec._Clothes_size(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "price":
 			out.Values[i] = ec._Clothes_price(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "quantity":
 			out.Values[i] = ec._Clothes_quantity(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
@@ -3314,47 +3284,38 @@ func (ec *executionContext) _Store(ctx context.Context, sel ast.SelectionSet, ob
 		case "id":
 			out.Values[i] = ec._Store_id(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "name":
 			out.Values[i] = ec._Store_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "storeId":
 			out.Values[i] = ec._Store_storeId(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "cnpj":
 			out.Values[i] = ec._Store_cnpj(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "phoneNumber":
 			out.Values[i] = ec._Store_phoneNumber(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "address":
 			out.Values[i] = ec._Store_address(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				atomic.AddUint32(&invalids, 1)
+				invalids++
 			}
 		case "category":
-			field := field
-			out.Concurrently(i, func() (res graphql.Marshaler) {
-				defer func() {
-					if r := recover(); r != nil {
-						ec.Error(ctx, ec.Recover(ctx, r))
-					}
-				}()
-				res = ec._Store_category(ctx, field, obj)
-				if res == graphql.Null {
-					atomic.AddUint32(&invalids, 1)
-				}
-				return res
-			})
+			out.Values[i] = ec._Store_category(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -3624,6 +3585,10 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNCategory2hatflixᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx context.Context, sel ast.SelectionSet, v models.Category) graphql.Marshaler {
+	return ec._Category(ctx, sel, &v)
 }
 
 func (ec *executionContext) marshalNCategory2ᚖhatflixᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx context.Context, sel ast.SelectionSet, v *models.Category) graphql.Marshaler {

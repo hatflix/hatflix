@@ -10,4 +10,5 @@ require (
 	github.com/golang/mock v1.5.0
 	github.com/jmoiron/sqlx v1.3.1
 	github.com/stretchr/testify v1.4.0
+	github.com/vektah/gqlparser/v2 v2.1.0
 )

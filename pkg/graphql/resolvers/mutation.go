@@ -4,14 +4,44 @@ import (
 	"context"
 	"errors"
 
-	"easyfood/pkg/entity"
-	"easyfood/pkg/graphql/gqlgen"
-	"easyfood/pkg/graphql/models"
-	"easyfood/services"
+	"hatflix/pkg/entity"
+	"hatflix/pkg/graphql/gqlgen"
+	"hatflix/pkg/graphql/models"
+	"hatflix/services"
 )
 
 type mutationResolver struct {
 	services services.All
+}
+
+func (m mutationResolver) CreateClothes(ctx context.Context, input models.CreateClothInput) (bool, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m mutationResolver) CreateCategory(ctx context.Context, input *models.CreateCategoryInput) (bool, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m mutationResolver) CreateStore(ctx context.Context, name models.CreateStoreInput) (bool, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m mutationResolver) UpdateStore(ctx context.Context, input models.UpdateStoreInput) (*models.Store, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m mutationResolver) UpdateCloth(ctx context.Context, input models.UpdateClothInput) (*models.Clothes, error) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (m mutationResolver) UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (*models.Category, error) {
+	//TODO implement me
+	panic("implement me")
 }
 
 func NewMutationResolver(s services.All) gqlgen.MutationResolver {
@@ -177,7 +207,7 @@ func (m mutationResolver) CreateRestaurant(ctx context.Context, input models.Cre
 
 func (m mutationResolver) UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (bool, error) {
 	category := entity.Category{
-		Id: input.ID,
+		Id:   input.ID,
 		Name: input.Name,
 	}
 	err := m.services.Category.Update(ctx, &category)

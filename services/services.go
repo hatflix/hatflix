@@ -3,17 +3,15 @@ package services
 import "github.com/jmoiron/sqlx"
 
 type All struct {
-	User       UserService
-	Dish       DishService
-	Category   CategoryService
-	Restaurant RestaurantService
+	Cloth    ClothService
+	Category CategoryService
+	Store    StoreService
 }
 
 func NewServices(db *sqlx.DB) All {
 	return All{
-		User:       NewUserService(db),
-		Dish:       NewDishService(db),
-		Category:   NewCategoryService(db),
-		Restaurant: NewRestaurantService(db),
+		Cloth:    NewClothService(db),
+		Category: NewCategoryService(db),
+		Store:    NewStoreService(db),
 	}
 }
