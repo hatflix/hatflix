@@ -78,10 +78,10 @@ type Query {
 }
 
 type Mutation {
-	createClothes(input: createClothInput!): Boolean!
+	createClothes(input: createClothInput!): Clothes!
 	createCategory(input: createCategoryInput): Boolean!
-	createStore(name: createStoreInput!): Boolean!
+	createStore(input: createStoreInput!): Store!
 	updateStore(input: updateStoreInput!): Store!
 	updateCloth(input: updateClothInput!): Clothes!
-	updateCategory(input: updateCategoryInput!): Category!
+	updateCategory(input: updateCategoryInput!): Boolean!
 }

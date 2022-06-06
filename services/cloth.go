@@ -75,7 +75,7 @@ func (d clothService) GetByStore(ctx context.Context, idLoja int) ([]*entity.Clo
 
 func (d clothService) Create(ctx context.Context, Clothes *entity.Clothes) error {
 	query := `
-		INSERT INTO pratos (id_restaurante, id_categoria, nome, preco, quantidade, tamanho)
+		INSERT INTO produtos (id_loja, id_categoria, nome, preco, quantidade, tamanho)
 		VALUES (:id_loja, :id_categoria, :nome, :preco, :quantidade, :tamanho)
 	`
 	result, err := d.db.NamedExecContext(ctx, query, Clothes)
@@ -90,9 +90,9 @@ func (d clothService) Create(ctx context.Context, Clothes *entity.Clothes) error
 
 func (d clothService) Update(ctx context.Context, Clothes *entity.Clothes) error {
 	query := `
-		UPDATE pratos
+		UPDATE produtos
 		SET id_categoria = :id_categoria, nome = :nome, preco = :preco, 
-		    quantidade = :quantidade, tamanh = :tamanho
+		    quantidade = :quantidade, tamanho = :tamanho
 		WHERE id = :id
 	`
 	_, err := d.db.NamedExecContext(ctx, query, Clothes)

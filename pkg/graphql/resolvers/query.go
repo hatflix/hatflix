@@ -25,29 +25,20 @@ func (q queryResolver) Category(ctx context.Context, id *int) ([]*models.Categor
 	return category, nil
 }
 
-func (q queryResolver) Dish(ctx context.Context, id *int) ([]*models.Dish, error) {
-	d, err := q.services.Dish.Get(ctx, id)
+func (q queryResolver) Clothes(ctx context.Context, id *int) ([]*models.Clothes, error) {
+	d, err := q.services.Cloth.Get(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return models.NewDish(d...), nil
+	return models.NewCloth(d...), nil
 }
 
-func (q queryResolver) Restaurant(ctx context.Context, id *int) ([]*models.Restaurant, error) {
-	u, err := q.services.Restaurant.Get(ctx, id)
+func (q queryResolver) Store(ctx context.Context, id *int) ([]*models.Store, error) {
+	u, err := q.services.Store.Get(ctx, id)
 	if err != nil {
 		return nil, err
 	}
 
-	return models.NewRestaurant(u...), nil
-}
-
-func (q queryResolver) User(ctx context.Context, id int) (*models.User, error) {
-	u, err := q.services.User.Get(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-
-	return models.NewUser(*u), nil
+	return models.NewStore(u...), nil
 }

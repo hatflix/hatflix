@@ -60,7 +60,7 @@ type ComplexityRoot struct {
 	Mutation struct {
 		CreateCategory func(childComplexity int, input *models.CreateCategoryInput) int
 		CreateClothes  func(childComplexity int, input models.CreateClothInput) int
-		CreateStore    func(childComplexity int, name models.CreateStoreInput) int
+		CreateStore    func(childComplexity int, input models.CreateStoreInput) int
 		UpdateCategory func(childComplexity int, input models.UpdateCategoryInput) int
 		UpdateCloth    func(childComplexity int, input models.UpdateClothInput) int
 		UpdateStore    func(childComplexity int, input models.UpdateStoreInput) int
@@ -84,12 +84,12 @@ type ComplexityRoot struct {
 }
 
 type MutationResolver interface {
-	CreateClothes(ctx context.Context, input models.CreateClothInput) (bool, error)
+	CreateClothes(ctx context.Context, input models.CreateClothInput) (*models.Clothes, error)
 	CreateCategory(ctx context.Context, input *models.CreateCategoryInput) (bool, error)
-	CreateStore(ctx context.Context, name models.CreateStoreInput) (bool, error)
+	CreateStore(ctx context.Context, input models.CreateStoreInput) (*models.Store, error)
 	UpdateStore(ctx context.Context, input models.UpdateStoreInput) (*models.Store, error)
 	UpdateCloth(ctx context.Context, input models.UpdateClothInput) (*models.Clothes, error)
-	UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (*models.Category, error)
+	UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (bool, error)
 }
 type QueryResolver interface {
 	Store(ctx context.Context, id *int) ([]*models.Store, error)
@@ -209,7 +209,7 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 			return 0, false
 		}
 
-		return e.complexity.Mutation.CreateStore(childComplexity, args["name"].(models.CreateStoreInput)), true
+		return e.complexity.Mutation.CreateStore(childComplexity, args["input"].(models.CreateStoreInput)), true
 
 	case "Mutation.updateCategory":
 		if e.complexity.Mutation.UpdateCategory == nil {
@@ -476,12 +476,12 @@ type Query {
 }
 
 type Mutation {
-	createClothes(input: createClothInput!): Boolean!
+	createClothes(input: createClothInput!): Clothes!
 	createCategory(input: createCategoryInput): Boolean!
-	createStore(name: createStoreInput!): Boolean!
+	createStore(input: createStoreInput!): Store!
 	updateStore(input: updateStoreInput!): Store!
 	updateCloth(input: updateClothInput!): Clothes!
-	updateCategory(input: updateCategoryInput!): Category!
+	updateCategory(input: updateCategoryInput!): Boolean!
 }
 `, BuiltIn: false},
 }
@@ -525,14 +525,14 @@ func (ec *executionContext) field_Mutation_createStore_args(ctx context.Context,
 	var err error
 	args := map[string]interface{}{}
 	var arg0 models.CreateStoreInput
-	if tmp, ok := rawArgs["name"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNcreateStoreInput2hatflixᚋpkgᚋgraphqlᚋmodelsᚐCreateStoreInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["name"] = arg0
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1031,9 +1031,9 @@ func (ec *executionContext) _Mutation_createClothes(ctx context.Context, field g
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(*models.Clothes)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNClothes2ᚖhatflixᚋpkgᚋgraphqlᚋmodelsᚐClothes(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_createCategory(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1103,7 +1103,7 @@ func (ec *executionContext) _Mutation_createStore(ctx context.Context, field gra
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().CreateStore(rctx, args["name"].(models.CreateStoreInput))
+		return ec.resolvers.Mutation().CreateStore(rctx, args["input"].(models.CreateStoreInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -1115,9 +1115,9 @@ func (ec *executionContext) _Mutation_createStore(ctx context.Context, field gra
 		}
 		return graphql.Null
 	}
-	res := resTmp.(bool)
+	res := resTmp.(*models.Store)
 	fc.Result = res
-	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+	return ec.marshalNStore2ᚖhatflixᚋpkgᚋgraphqlᚋmodelsᚐStore(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Mutation_updateStore(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -1241,9 +1241,9 @@ func (ec *executionContext) _Mutation_updateCategory(ctx context.Context, field 
 		}
 		return graphql.Null
 	}
-	res := resTmp.(*models.Category)
+	res := resTmp.(bool)
 	fc.Result = res
-	return ec.marshalNCategory2ᚖhatflixᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx, field.Selections, res)
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query_store(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3585,10 +3585,6 @@ func (ec *executionContext) marshalNBoolean2bool(ctx context.Context, sel ast.Se
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) marshalNCategory2hatflixᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx context.Context, sel ast.SelectionSet, v models.Category) graphql.Marshaler {
-	return ec._Category(ctx, sel, &v)
 }
 
 func (ec *executionContext) marshalNCategory2ᚖhatflixᚋpkgᚋgraphqlᚋmodelsᚐCategory(ctx context.Context, sel ast.SelectionSet, v *models.Category) graphql.Marshaler {

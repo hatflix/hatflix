@@ -3,7 +3,6 @@ package graphql
 import (
 	"context"
 	"errors"
-
 	"hatflix/pkg/entity"
 	"hatflix/pkg/graphql/gqlgen"
 	"hatflix/pkg/graphql/models"
@@ -14,195 +13,203 @@ type mutationResolver struct {
 	services services.All
 }
 
-func (m mutationResolver) CreateClothes(ctx context.Context, input models.CreateClothInput) (bool, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (m mutationResolver) CreateCategory(ctx context.Context, input *models.CreateCategoryInput) (bool, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (m mutationResolver) CreateStore(ctx context.Context, name models.CreateStoreInput) (bool, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (m mutationResolver) UpdateStore(ctx context.Context, input models.UpdateStoreInput) (*models.Store, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (m mutationResolver) UpdateCloth(ctx context.Context, input models.UpdateClothInput) (*models.Clothes, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
-func (m mutationResolver) UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (*models.Category, error) {
-	//TODO implement me
-	panic("implement me")
-}
-
 func NewMutationResolver(s services.All) gqlgen.MutationResolver {
 	return mutationResolver{services: s}
 }
 
-func (m mutationResolver) UpdateRestaurant(ctx context.Context, input models.UpdateRestaurantInput) (*models.Restaurant, error) {
-	restaurant, err := m.services.Restaurant.Get(ctx, &input.ID)
-	if err != nil {
-		return nil, err
-	}
-	r := restaurant[0]
-
-	changes := false
-	if input.Name != nil {
-		if *input.Name != r.Name {
-			r.Name = *input.Name
-			changes = true
-		}
-	}
-	if input.PhoneNumber != nil {
-		if *input.PhoneNumber != r.PhoneNumber {
-			r.PhoneNumber = *input.PhoneNumber
-			changes = true
-		}
-	}
-	if input.Address != nil {
-		if *input.Address != r.Address {
-			r.Address = *input.Address
-			changes = true
-		}
-	}
-	if input.OpenHour != nil {
-		if *input.OpenHour != r.OpenHour {
-			r.OpenHour = *input.OpenHour
-			changes = true
-		}
-	}
-	if input.CloseHour != nil {
-		if *input.CloseHour != r.CloseHour {
-			r.CloseHour = *input.CloseHour
-			changes = true
-		}
-	}
-	if len(input.OpenDays) > 0 {
-		r.OpenDays = models.GetEntityWeekdays(input.OpenDays)
-		changes = true
-	}
-	if input.Description != r.Description {
-		r.Description = input.Description
-		changes = true
-	}
-
-	if changes {
-		if err := m.services.Restaurant.Update(ctx, r); err != nil {
-			return nil, errors.New("failed to update")
-		}
-	}
-
-	result := models.NewRestaurant(r)[0]
-	return result, nil
-}
-
-func (m mutationResolver) CreateDish(ctx context.Context, input models.CreateDishInput) (*models.Dish, error) {
+func (m mutationResolver) CreateClothes(ctx context.Context, input models.CreateClothInput) (*models.Clothes, error) {
 	if input.Name == "" {
 		return nil, errors.New("invalid dish name")
 	}
 
-	if input.RestaurantID == 0 {
-		return nil, errors.New("must be associated to a restaurant")
+	if input.IDStore == 0 {
+		return nil, errors.New("must be associated to a store")
 	}
 
-	dish := entity.Dish{
-		RestaurantID: input.RestaurantID,
-		CategoryID:   input.CategoryID,
-		Name:         input.Name,
-		Price:        input.Price,
-		CookTime:     input.CookTime,
+	if input.Price == 0 {
+		return nil, errors.New("must be a price")
 	}
 
-	err := m.services.Dish.Create(ctx, &dish)
+	if input.Size == "" {
+		return nil, errors.New("must be a size")
+	}
+
+	if input.Quantity == 0 {
+		return nil, errors.New("must be a quantity")
+	}
+
+	cloth := entity.Clothes{
+		Name:       input.Name,
+		StoreID:    input.IDStore,
+		CategoryID: input.Category,
+		Size:       input.Size,
+		Price:      input.Price,
+		Quantity:   input.Quantity,
+	}
+
+	err := m.services.Cloth.Create(ctx, &cloth)
 	if err != nil {
 		return nil, err
 	}
 
-	return models.NewDish(&dish)[0], nil
+	return models.NewCloth(&cloth)[0], nil
 }
 
-func (m mutationResolver) CreateUser(ctx context.Context, input models.CreateUserInput) (*models.User, error) {
-	if input.Email == "" {
-		return nil, errors.New("invalid email")
-	}
-
-	if input.Senha == "" {
-		return nil, errors.New("invalid password")
-	}
-
-	user := entity.User{
-		FirstName:   input.FirstName,
-		LastName:    input.LastName,
-		Email:       input.Email,
-		PhoneNumber: input.PhoneNumber,
-		Password:    input.Senha,
-	}
-
-	err := m.services.User.Create(ctx, &user)
-	if err != nil {
-		return nil, err
-	}
-	return models.NewUser(user), nil
-}
-
-func (m mutationResolver) CreateCategory(ctx context.Context, name string) (bool, error) {
-	if name == "" {
-		return false, errors.New("invalid name")
+func (m mutationResolver) CreateCategory(ctx context.Context, input *models.CreateCategoryInput) (bool, error) {
+	if input.Name == "" {
+		return false, errors.New("must be a name")
 	}
 
 	category := entity.Category{
-		Name: name,
+		Name: input.Name,
 	}
 
 	err := m.services.Category.Create(ctx, &category)
 	if err != nil {
 		return false, err
 	}
+
 	return true, nil
+
 }
 
-func (m mutationResolver) CreateRestaurant(ctx context.Context, input models.CreateRestaurantInput) (*models.Restaurant, error) {
+func (m mutationResolver) CreateStore(ctx context.Context, input models.CreateStoreInput) (*models.Store, error) {
+
 	if input.Name == "" {
-		return nil, errors.New("invalid name")
+		return nil, errors.New("must have a name")
 	}
-
+	if input.Cnpj == "" {
+		return nil, errors.New("must have a Cnpj")
+	}
 	if input.Address == "" {
-		return nil, errors.New("invalid address")
+		return nil, errors.New("must have a Address")
 	}
-
-	if len(input.OpenDays) == 0 {
-		return nil, errors.New("must specify open days")
-	}
-
 	if input.PhoneNumber == "" {
-		return nil, errors.New("invalid phone number")
+		return nil, errors.New("must have a PhoneNumber")
+	}
+	if input.Category == 0 {
+		return nil, errors.New("must have a CategoryID")
 	}
 
-	restaurant := entity.Restaurant{
-		OpenHour:    input.OpenHour,
-		CloseHour:   input.CloseHour,
-		OpenDays:    models.GetEntityWeekdays(input.OpenDays),
+	store := entity.Store{
 		Name:        input.Name,
-		Description: input.Description,
+		Cnpj:        input.Cnpj,
 		PhoneNumber: input.PhoneNumber,
 		Address:     input.Address,
+		CategoryID:  input.Category,
 	}
 
-	err := m.services.Restaurant.Create(ctx, &restaurant)
+	err := m.services.Store.Create(ctx, &store)
 	if err != nil {
 		return nil, err
 	}
 
-	return models.NewRestaurant(&restaurant)[0], nil
+	return models.NewStore(&store)[0], nil
+
+}
+
+func (m mutationResolver) UpdateStore(ctx context.Context, input models.UpdateStoreInput) (*models.Store, error) {
+	store, err := m.services.Store.Get(ctx, &input.ID)
+	if err != nil {
+		return nil, err
+	}
+	r := store[0]
+
+	changes := false
+	if &input.Name != nil {
+		if input.Name != r.Name {
+			r.Name = input.Name
+			changes = true
+		}
+	}
+	if &input.PhoneNumber != nil {
+		if input.PhoneNumber != r.PhoneNumber {
+			r.PhoneNumber = input.PhoneNumber
+			changes = true
+		}
+	}
+	if &input.Address != nil {
+		if input.Address != r.Address {
+			r.Address = input.Address
+			changes = true
+		}
+	}
+	if &input.Cnpj != nil {
+		if input.Cnpj != r.Cnpj {
+			r.Cnpj = input.Cnpj
+			changes = true
+		}
+	}
+	if &input.Category != nil {
+		if input.Category != r.CategoryID {
+			r.CategoryID = input.Category
+			changes = true
+		}
+	}
+
+	if changes {
+		if err := m.services.Store.Update(ctx, r); err != nil {
+			return nil, errors.New("failed to update" + err.Error())
+		}
+	}
+
+	result := models.NewStore(r)[0]
+	return result, nil
+}
+
+func (m mutationResolver) UpdateCloth(ctx context.Context, input models.UpdateClothInput) (*models.Clothes, error) {
+	cloth, err := m.services.Cloth.Get(ctx, &input.ID)
+	if err != nil {
+		return nil, err
+	}
+	r := cloth[0]
+
+	changes := false
+	if &input.Name != nil {
+		if input.Name != r.Name {
+			r.Name = input.Name
+			changes = true
+		}
+	}
+	if &input.IDStore != nil {
+		if input.IDStore != r.StoreID {
+			r.StoreID = input.IDStore
+			changes = true
+		}
+	}
+	if &input.Size != nil {
+		if input.Size != r.Size {
+			r.Size = input.Size
+			changes = true
+		}
+	}
+	if &input.Price != nil {
+		if input.Price != r.Price {
+			r.Price = input.Price
+			changes = true
+		}
+	}
+	if &input.Quantity != nil {
+		if input.Quantity != r.Quantity {
+			r.Quantity = input.Quantity
+			changes = true
+		}
+	}
+	if &input.Category != nil {
+		if input.Category != r.CategoryID {
+			r.CategoryID = input.Category
+			changes = true
+		}
+	}
+
+	if changes {
+		if err := m.services.Cloth.Update(ctx, r); err != nil {
+			return nil, errors.New("failed to update" + err.Error())
+		}
+	}
+
+	result := models.NewCloth(r)[0]
+	return result, nil
 }
 
 func (m mutationResolver) UpdateCategory(ctx context.Context, input models.UpdateCategoryInput) (bool, error) {
@@ -215,25 +222,4 @@ func (m mutationResolver) UpdateCategory(ctx context.Context, input models.Updat
 		return false, err
 	}
 	return true, nil
-}
-
-func (m mutationResolver) UpdateDish(ctx context.Context, input models.UpdateDishInput) (*models.Dish, error) {
-	if input.Name == "" {
-		return nil, errors.New("invalid dish name")
-	}
-
-	dish := entity.Dish{
-		Id:         input.ID,
-		CategoryID: input.CategoryID,
-		Name:       input.Name,
-		Price:      input.Price,
-		CookTime:   input.CookTime,
-	}
-
-	err := m.services.Dish.Update(ctx, &dish)
-	if err != nil {
-		return nil, err
-	}
-
-	return models.NewDish(&dish)[0], nil
 }

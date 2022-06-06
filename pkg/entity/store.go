@@ -4,7 +4,7 @@ type Store struct {
 	Id          int    `db:"id"`
 	Name        string `db:"nome"`
 	Cnpj        string `db:"cnpj"`
-	PhoneNumber string `db:"telegone"`
+	PhoneNumber string `db:"telefone"`
 	Address     string `db:"endereco"`
 	CategoryID  int    `db:"id_categoria"`
 }

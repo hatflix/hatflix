@@ -17,12 +17,6 @@ CREATE TABLE IF NOT EXISTS `categorias` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-# INSERT INTO `categorias` (`nome`) VALUES
-#   ("Peixes"),
-#   ("Massas"),
-#   ("Entrada"),
-#   ("Carnes"),
-#   ("Estrangeira");
 
 -- Dumping structure for table hatflix.lojas
 CREATE TABLE IF NOT EXISTS `lojas` (
@@ -31,9 +25,9 @@ CREATE TABLE IF NOT EXISTS `lojas` (
   `cnpj` varchar(14) NOT NULL,
   `telefone` varchar(11) NOT NULL,
   `endereco` varchar(64) NOT NULL,
-  `id_categoria` INT(11) NOT NULL,
+  `id_categoria` INT(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `id_cidade` (`id_cidade`),
+  KEY `id_categoria` (`id_categoria`),
   CONSTRAINT `loja_categoria` FOREIGN KEY (`id_categoria`) REFERENCES `categorias` (`id`) ON DELETE SET NULL ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
 
@@ -95,18 +89,18 @@ CREATE TABLE IF NOT EXISTS `produtos` (
 # /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
 # /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 
-CREATE TABLE IF NOT EXISTS `usuarios` (
-  `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
-  `primeiro_nome` varchar(32) NOT NULL,
-  `ultimo_nome` varchar(32) NOT NULL,
-  `telefone` varchar(11) NOT NULL,
-  `email` varchar(50) NOT NULL UNIQUE,
-  `senha_hash` BINARY(64) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
-
-INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `senha_hash`) VALUES
-  ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
-  ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
-  ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
+# CREATE TABLE IF NOT EXISTS `usuarios` (
+#   `id` INT(11) unsigned NOT NULL AUTO_INCREMENT,
+#   `primeiro_nome` varchar(32) NOT NULL,
+#   `ultimo_nome` varchar(32) NOT NULL,
+#   `telefone` varchar(11) NOT NULL,
+#   `email` varchar(50) NOT NULL UNIQUE,
+#   `senha_hash` BINARY(64) NOT NULL,
+#   PRIMARY KEY (`id`)
+# ) ENGINE=InnoDB DEFAULT CHARSET=UTF8;
+#
+# INSERT INTO `usuarios` (`primeiro_nome`, `ultimo_nome`, `telefone`, `email`, `senha_hash`) VALUES
+#   ('Joao', 'Pedro', '31984464729', 'joaopedro@gmail.com', SHA1('joaopedro2010')),
+#   ('Maria', 'Lima', '35987432164', 'marialima@hotmail.com', SHA1('ml15122015')),
+#   ('Carlos', 'Antunes', '37984455792', 'carlos_antunes12@outlook.com', SHA1('carlitos1212'));
 
