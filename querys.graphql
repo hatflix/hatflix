@@ -1,0 +1,92 @@
+#http://localhost:3000/explorer
+#http://localhost:8080/index.php
+
+mutation createCloth {
+    createClothes (input :{
+        id_store:2,
+        name: "sobre tudo",
+        category:1,
+        size:"M",
+        price:100,
+        quantity:1
+    }){
+        id_store
+        name
+
+    }
+}
+
+mutation createStore{
+    createStore (input:{
+        name:"loja_teste"
+        cnpj:"1234",
+        phoneNumber:"3131",
+        address:"rua x",
+        category: 1
+    } ){
+        id
+    }
+}
+
+mutation CreateCategory{
+    createCategory (input:{
+        name: "pijama"
+    } )
+}
+
+
+mutation updateStore{
+    updateStore (input:  {
+        id:2
+        name:"loja_izabela"
+        cnpj: "12345",
+        phoneNumber: "3131"
+        address: "rua x",
+        category: 1
+    } ){
+        name
+    }
+}
+
+mutation updateCloth {
+    updateCloth (input: {
+        id:2
+        name: "shorts",
+        id_store: 2,
+        category: 1,
+        size: "M",
+        price: 12
+        quantity: 100
+    } ){
+        name
+    }
+}
+
+mutation updateCategory {
+    updateCategory (input: {
+        id: 1
+        name: "roupa de dormir"
+    })
+}
+
+query getCloths {
+    clothes (id : 2) {
+        id
+        name
+        quantity
+    }
+}
+
+query getStores {
+    store (id : 2) {
+        id
+        name
+    }
+}
+
+query getCategory {
+    category(id:1){
+        id
+        name
+    }
+}
