@@ -22,7 +22,6 @@ func TestCategoryService_Get(t *testing.T) {
 
 	sqlxDB := sqlx.NewDb(mockDB, "sqlmock")
 	srvc := NewCategoryService(sqlxDB)
-
 	categoryId := 10
 
 	query := regexp.QuoteMeta(fmt.Sprintf("SELECT * FROM categorias WHERE id = %d", categoryId))
