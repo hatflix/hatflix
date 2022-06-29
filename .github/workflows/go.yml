@@ -22,4 +22,7 @@ jobs:
       run: go build -v ./...
 
     - name: Test
-      run: go test -v ./...
+      run: go test -gcflags=all=-l -race -coverprofile=profile.cov ./pkg/graphql/models ./pkg/entity ./pkg/graphql/resolvers ./services
+
+    - name: Coverage
+      run: go tool cover -func profile.cov

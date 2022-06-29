@@ -122,7 +122,7 @@ func TestStoreService_Create(t *testing.T) {
 	srvc := NewStoreService(sqlxDB)
 
 	query := regexp.QuoteMeta(
-		"INSERT INTO produtos (id_loja, id_categoria, nome, preco, quantidade, tamanho) VALUES (?, ?, ?, ?, ?, ?)")
+		"INSERT INTO lojas (nome, cnpj, telefone, endereco, id_categoria) VALUES (?, ?, ?, ?, ?)")
 
 	Store := entity.Store{
 		Id:          1,
@@ -134,12 +134,12 @@ func TestStoreService_Create(t *testing.T) {
 	}
 
 	t.Run("success", func(t *testing.T) {
-		mock.ExpectExec(query)
+		mock.ExpectExec(query).
+			WithArgs(Store.Name, Store.Cnpj, Store.PhoneNumber, Store.Address, Store.CategoryID).
+			WillReturnResult(sqlmock.NewResult(1, 1))
 
-		_ = srvc.Create(ctx, &Store)
-		//	require.NoError(t, err)
-		//require.Equal(t, StoreId, res)
-		//require.Equal(t, "massas", res)
+		err := srvc.Create(ctx, &Store)
+		require.NoError(t, err)
 	})
 
 	t.Run("failed", func(t *testing.T) {
