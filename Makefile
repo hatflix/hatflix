@@ -8,5 +8,9 @@ fresh-db: ## Sobe o banco localmente mas recriando tudo do zero
 gqlgen: ## Gera os arquivos para a API GraphQL
 	go generate ./config/http/config.go
 
+unit_test: ## Unittest
+	go test -gcflags=all=-l -race -coverprofile=profile.cov ./pkg/graphql/models ./pkg/entity ./pkg/graphql/resolvers ./services
+	go tool cover -func profile.cov
 run:
 	go generate ./cmd/http/http.go
+
